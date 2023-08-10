@@ -54,8 +54,8 @@ function library:Print(teleportPlayer)
     local posMin = Vector3.new(math.min(self.firstPos.X, self.lastPos.X), math.min(self.firstPos.Y, self.lastPos.Y), math.min(self.firstPos.Z, self.lastPos.Z));
     local posMax = Vector3.new(math.max(self.firstPos.X, self.lastPos.X), math.max(self.firstPos.Y, self.lastPos.Y), math.max(self.firstPos.Z, self.lastPos.Z));
     for X = posMin.X, posMax.X, 3 do
-        for Y = posMin.Y, posMin.Y, 3 do
-            for Z = posMin.Z, posMin.Z, 3 do
+        for Y = posMin.Y, posMax.Y, 3 do
+            for Z = posMin.Z, posMax.Z, 3 do
                 if self.finish then return end;
                 local pos = Vector3.new(X, Y, Z);
 
