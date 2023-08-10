@@ -81,4 +81,33 @@ function library:Print(teleportPlayer)
     end
 end
 
+function library:Shred(teleportPlayer)
+    local posMin = Vector3.new(math.min(self.firstPos.X, self.lastPos.X), math.min(self.firstPos.Y, self.lastPos.Y), math.min(self.firstPos.Z, self.lastPos.Z));
+    local posMax = Vector3.new(math.max(self.firstPos.X, self.lastPos.X), math.max(self.firstPos.Y, self.lastPos.Y), math.max(self.firstPos.Z, self.lastPos.Z));
+    local reg = Region3.new(posMin, posMax);
+
+    for _, v in pairs(Workspace:FindPartsInRegion3(reg, nil, math.huge)) do
+        if self.finish then return end;
+
+        if v.Name ~= "bedrock" and v.Parent and v.Parent.Name == "Blocks" and (not v:FindFirstChild("protal-to-spawn")) then
+            repeat task.wait();
+                local mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Position).magnitude;
+
+                if mag > 24 then
+                    teleportPlayer(v.Position);
+                end
+                task.spawn(function()
+                    BlockHit:InvokeServer({
+                        ["xJfikbvplSzbtyuOkbihsrifqttzttaspq"] = "\7\240\159\164\163\240\159\164\161\7\n\7\n\7\nnooZcLpu",
+                        ["part"] = v,
+                        ["block"] = v,
+                        ["norm"] = v.Position
+                    });
+                end)
+            until v == nil or (not v:IsDescendantOf(Workspace)) or self.finish == true;
+        end
+        Heartbeat:Wait()
+    end
+end
+
 return library;
