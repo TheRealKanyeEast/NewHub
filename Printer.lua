@@ -91,22 +91,23 @@ function library:Shred(teleportPlayer)
 
         if v.Name ~= "bedrock" and v.Parent and v.Parent.Name == "Blocks" and (not v:FindFirstChild("protal-to-spawn")) then
             repeat task.wait();
-                local mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Position).magnitude;
+                if v ~= nil and v:IsDescendantOf(Workspace) then
+                    local mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - v.Position).magnitude;
 
-                if mag > 24 then
-                    teleportPlayer(v.Position);
-                end
-                task.spawn(function()
+                    if mag > 24 then
+                        teleportPlayer(v.Position);
+                    end
                     BlockHit:InvokeServer({
                         ["xJfikbvplSzbtyuOkbihsrifqttzttaspq"] = "\7\240\159\164\163\240\159\164\161\7\n\7\n\7\nnooZcLpu",
                         ["part"] = v,
                         ["block"] = v,
                         ["norm"] = v.Position
                     });
-                end)
+                end
+                task.wait()
             until v == nil or (not v:IsDescendantOf(Workspace)) or self.finish == true;
         end
-        Heartbeat:Wait()
+        --Heartbeat:Wait()
     end
 end
 
