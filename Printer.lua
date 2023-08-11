@@ -59,11 +59,7 @@ function library:Print(teleportPlayer)
                 if self.finish then return end;
                 local pos = Vector3.new(X, Y, Z);
 
-                local mag = (game.Players.LocalPlayer.Character.HumanoidRootPart.Position - pos).magnitude;
-
-                if mag > 24 then
-                    teleportPlayer(pos);
-                end
+                teleportPlayer(pos);
 
                 if not self:isBlocked(pos) then
                     task.spawn(function()
