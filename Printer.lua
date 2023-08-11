@@ -50,6 +50,8 @@ function library:getBlock()
     return self.block;
 end
 
+getgenv().CropFarm = true;
+
 function library:Print(teleportPlayer)
     local posMin = Vector3.new(math.min(self.firstPos.X, self.lastPos.X), math.min(self.firstPos.Y, self.lastPos.Y), math.min(self.firstPos.Z, self.lastPos.Z));
     local posMax = Vector3.new(math.max(self.firstPos.X, self.lastPos.X), math.max(self.firstPos.Y, self.lastPos.Y), math.max(self.firstPos.Z, self.lastPos.Z));
@@ -59,16 +61,15 @@ function library:Print(teleportPlayer)
                 if self.finish then return end;
                 local pos = Vector3.new(X, Y, Z);
 
-                teleportPlayer(pos);
-
                 if not self:isBlocked(pos) then
+                    teleportPlayer(pos, "CropFarm", pos);
                     PlaceBlock:InvokeServer({
                         ["upperSlab"] = false,
                         ["cframe"] = CFrame.new(pos),
                         ["QmadGjzayYoAekfqpllqlan"] = "\7\240\159\164\163\240\159\164\161\7\n\7\n\7\nnejzlhpBhskuqskhxjZoegLhCvb",
                         ["blockType"] = self.block
                     });
-                    Heartbeat:Wait();
+                    task.wait();
                 end
             end
         end
