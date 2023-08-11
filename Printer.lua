@@ -62,14 +62,12 @@ function library:Print(teleportPlayer)
                 teleportPlayer(pos);
 
                 if not self:isBlocked(pos) then
-                    task.spawn(function()
-                        PlaceBlock:InvokeServer({
-                            ["upperSlab"] = false,
-                            ["cframe"] = CFrame.new(pos),
-                            ["QmadGjzayYoAekfqpllqlan"] = "\7\240\159\164\163\240\159\164\161\7\n\7\n\7\nnejzlhpBhskuqskhxjZoegLhCvb",
-                            ["blockType"] = self.block
-                        });
-                    end)
+                    PlaceBlock:InvokeServer({
+                        ["upperSlab"] = false,
+                        ["cframe"] = CFrame.new(pos),
+                        ["QmadGjzayYoAekfqpllqlan"] = "\7\240\159\164\163\240\159\164\161\7\n\7\n\7\nnejzlhpBhskuqskhxjZoegLhCvb",
+                        ["blockType"] = self.block
+                    });
                     Heartbeat:Wait();
                 end
             end
