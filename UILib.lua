@@ -1598,43 +1598,42 @@ do
         return table.unpack(multiSection.sections)
     end
     --
-    function sections:Label(info)
-        local info = info or {}
-        local name = info.name or info.Name or info.title or info.Title or "New Label"
-        local middle = info.middle or info.Middle or false
-        local pointer = info.pointer or info.Pointer or info.flag or info.Flag or nil
-        --
-        local window = self.window
-        local page = self.page
-        local section = self
-        --
-        local label = {axis = section.currentAxis, text = name}
-        --
-        local label_title = utility:Create("TextLabel", {Vector2.new(middle and (section.section_frame.Size.X/2) or 4,label.axis), section.section_frame}, {
-            Text = name,
-            Size = theme.textsize,
-            Font = theme.font,
-            Color = theme.textcolor,
-            OutlineColor = theme.textborder,
-            Center = middle,
-            Position = utility:Position(middle and 0.5 or 0, middle and 0 or 4, 0, 0, section.section_frame),
-            Visible = page.open
-        }, section.visibleContent)
-        --
-        function label:Update(info)
-            label.text = info.name or info.Name or info.title or info.Title or "New Label"
-            label_title.Text = label.text
-        end
-        --
-        if pointer and tostring(pointer) ~= "" and tostring(pointer) ~= " " and not library.pointers[tostring(pointer)] then
-            library.pointers[tostring(pointer)] = label
-        end
-        --
-        section.currentAxis = section.currentAxis + label_title.TextBounds.Y + 4
-        section:Update()
-        --
-        return label
+function sections:Label(info)
+    local info = info or {}
+    local name = info.name or info.Name or info.title or info.Title or "New Label"
+    local middle = info.middle or info.Middle or false
+    local pointer = info.pointer or info.Pointer or info.flag or info.Flag or nil
+    local upsize = info.Upsize or false
+
+    local section = self
+    local label = { axis = section.currentAxis, text = name }
+
+    local label_title = utility:Create("TextLabel", { Vector2.new(middle and (section.section_frame.Size.X / 2) or 4, label.axis), section.section_frame }, {
+        Text = name,
+        Size = upsize and theme.textsize + 1 or theme.textsize,
+        Font = theme.font,
+        Color = theme.textcolor,
+        OutlineColor = theme.textborder,
+        Center = middle,
+        Position = utility:Position(middle and 0.5 or 0, middle and 0 or 4, 0, 0, section.section_frame),
+        Visible = section.page.open,
+    }, section.visibleContent)
+
+    function label:Update(info)
+        label.text = info.name or info.Name or info.title or info.Title or "New Label"
+        label_title.Text = label.text
     end
+
+    if pointer and tostring(pointer) ~= "" and tostring(pointer) ~= " " and not library.pointers[tostring(pointer)] then
+        library.pointers[tostring(pointer)] = label
+    end
+
+    section.currentAxis = section.currentAxis + label_title.TextBounds.Y + 4
+    section:Update()
+
+    return label
+end
+
     --
     function sections:Toggle(info)
         local info = info or {}
@@ -2624,9 +2623,12 @@ do
         library.began[#library.began + 1] = function(Input)
             if Input.UserInputType == Enum.UserInputType.MouseButton1 and button_outline.Visible and window.isVisible and utility:MouseOverDrawing({section.section_frame.Position.X, section.section_frame.Position.Y + button.axis, section.section_frame.Position.X + section.section_frame.Size.X, section.section_frame.Position.Y + button.axis + 20}) and not window:IsOverContent() then
                 callback()
-            end
-        end
-        --
+		button_frame.Color = Color3.new(1, 1, 1)
+	        wait(0.05)  
+	        button_frame.Color = theme.light_contrast
+		end
+	end
+
         library.changed[#library.changed + 1] = function(Input)
             if Input.UserInputType == Enum.UserInputType.MouseMovement and button_outline.Visible and window.isVisible then
                 if utility:MouseOverDrawing({section.section_frame.Position.X, section.section_frame.Position.Y + button.axis, section.section_frame.Position.X + section.section_frame.Size.X, section.section_frame.Position.Y + button.axis + 20}) and not window:IsOverContent() then
@@ -2705,6 +2707,7 @@ do
             library.began[#library.began + 1] = function(Input)
                 if Input.UserInputType == Enum.UserInputType.MouseButton1 and button_outline.Visible and window.isVisible and utility:MouseOverDrawing({section.section_frame.Position.X + (i == 2 and (section.section_frame.Size.X/2) or 0), section.section_frame.Position.Y + button.axis, section.section_frame.Position.X + section.section_frame.Size.X - (i == 1 and (section.section_frame.Size.X/2) or 0), section.section_frame.Position.Y + button.axis + 20}) and not window:IsOverContent() then
                     buttons[i][2]()
+		 
                 end
             end
             --
