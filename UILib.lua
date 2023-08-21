@@ -783,7 +783,8 @@ do
             return window.watermark
         end
         --
-        function window:NotificationList(info)
+
+	function window:NotificationList(info)
             window.notificationlist = {notifications = {}}
             --
             local info = info or {}
@@ -797,7 +798,7 @@ do
                 --
                 local notify_outline = utility:Create("Frame", {Vector2.new(0, 0)}, {
                     Size = utility:Size(0, 18 + (7 * #text), 0, 29),
-                    Position = utility:Position(0, 29, 0, 34 + (#window.notificationlist.notifications * 35)),
+                    Position = utility:Position(0, 1722, 0, 965 - (#window.notificationlist.notifications * 35)),
                     Color = theme.outline,
                     ZIndex = 1,
                     Transparency = 0,
@@ -826,7 +827,7 @@ do
                 })notification["notify_frame"] = notify_frame
                 --
                 local notify_accent = utility:Create("Frame", {Vector2.new(0, 0), notify_frame}, {
-                    Size = utility:Size(0, 5, 0, 25),
+                    Size = utility:Size(0, 2.5, 0, 25),
                     Position = utility:Position(0, 0, 0, 0, notify_frame),
                     Color = theme.accent,
                     ZIndex = 3,
@@ -836,7 +837,7 @@ do
                 })notification["notify_accent"] = notify_accent
                 --
                 local notify_title = utility:Create("TextLabel", {Vector2.new(8, 5), notify_frame}, {
-                    Size = 13,
+                    Size = 14,
                     Position = utility:Position(0, 10, 0, 5, notify_frame),
                     Font = Drawing.Fonts.Plex,
                     Color = theme.textcolor,
